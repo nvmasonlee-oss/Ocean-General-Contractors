@@ -1,0 +1,110 @@
+# ============================================================
+#  Pages CMS configuration  (pagescms.org)
+#  This is the ONLY file Pages CMS needs. It tells the editor
+#  which fields to show. It maps directly onto content.json.
+#  You do not need to edit anything in here.
+# ============================================================
+
+media:
+  input: assets/uploads      # where uploaded photos are saved in the repo
+  output: /assets/uploads    # the public web path to those photos
+
+content:
+  - name: content
+    label: Your Website
+    type: file
+    path: content.json
+    fields:
+      # ---------------- Business ----------------
+      - name: business
+        label: Business Info
+        type: object
+        fields:
+          - { name: shortName, label: Logo word (short), type: string }
+          - { name: tagline, label: Logo tagline, type: string }
+          - { name: name, label: Full business name, type: string }
+          - { name: heroLocation, label: Top-of-page location line, type: string }
+          - { name: heroRating, label: Top-of-page rating line, type: string }
+          - { name: ownerName, label: Owner name, type: string }
+          - { name: ownerTitle, label: Owner title, type: string }
+
+      # ---------------- Contact ----------------
+      - name: contact
+        label: Contact Details
+        type: object
+        fields:
+          - { name: phone, label: Phone number, type: string }
+          - { name: email, label: Email address, type: string }
+          - { name: address, label: Shop address, type: string }
+
+      # ---------------- Hero (top section) ----------------
+      - name: hero
+        label: Top Section (Hero)
+        type: object
+        fields:
+          - { name: headline, label: Big headline, type: text }
+          - { name: subtext, label: Sub-paragraph, type: text }
+          - { name: ctaPrimary, label: Main button text, type: string }
+          - { name: ctaSecondary, label: Second button text, type: string }
+          - { name: videoUrl, label: Background video URL (.mp4), type: string, required: false }
+
+      # ---------------- About ----------------
+      - name: about
+        label: About Section
+        type: object
+        fields:
+          - { name: eyebrow, label: Small label, type: string }
+          - { name: heading, label: Heading, type: string }
+          - { name: paragraph1, label: Paragraph 1, type: text }
+          - { name: paragraph2, label: Paragraph 2, type: text }
+          - { name: photo, label: Photo, type: image, required: false }
+          - { name: photoCaption, label: Photo caption, type: string, required: false }
+          - { name: photoLocation, label: Photo location label, type: string, required: false }
+
+      # ---------------- Services (add / remove) ----------------
+      - name: services
+        label: Services
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Service name, type: string }
+          - { name: description, label: Description, type: text }
+          - { name: tags, label: Tags (comma-separated), type: string }
+
+      # ---------------- Reviews (add / remove) ----------------
+      - name: reviews
+        label: Reviews
+        type: object
+        list: true
+        fields:
+          - { name: quote, label: Review text, type: text }
+          - { name: name, label: Customer name, type: string }
+          - { name: detail, label: Project / detail, type: string }
+          - { name: reply, label: Owner reply (optional), type: text, required: false }
+
+      # ---------------- Gallery (add / remove, upload photos) ----------------
+      - name: gallery
+        label: Photo Gallery
+        type: object
+        list: true
+        fields:
+          - { name: image, label: Photo, type: image }
+          - { name: title, label: Caption title, type: string }
+          - { name: sub, label: Caption subtitle, type: string }
+          - name: size
+            label: Tile size
+            type: select
+            options:
+              values:
+                - wide
+                - tall
+                - half
+
+      # ---------------- Bottom contact section ----------------
+      - name: contactSection
+        label: Bottom Contact Section
+        type: object
+        fields:
+          - { name: eyebrow, label: Small label, type: string }
+          - { name: heading, label: Heading, type: string }
+          - { name: text, label: Paragraph, type: text }

@@ -1,0 +1,66 @@
+{
+  "business": {
+    "shortName": "Ocean",
+    "tagline": "General Contractors",
+    "name": "Ocean General Contractors",
+    "heroLocation": "San Jose · California · Est. owner-run",
+    "heroRating": "5.0 on Google · 30+ reviews",
+    "ownerName": "Noe Guzman",
+    "ownerTitle": "Owner & lead builder"
+  },
+  "contact": {
+    "phone": "(408) 679-8566",
+    "email": "bluecollarcorgis@gmail.com",
+    "address": "195 N 34th St, San Jose, CA 95116"
+  },
+  "hero": {
+    "headline": "We don't just finish the job. We finish it right.",
+    "subtext": "Ocean General Contractors remodels kitchens, baths, and whole homes across San Jose. Owner-operated by Noe Guzman — so the guy who quotes the job is the guy who shows up to do it.",
+    "ctaPrimary": "Get a free estimate",
+    "ctaSecondary": "See the work",
+    "videoUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3F1bV9SXo9rw18UWV9g3FTg9DFs/hf_20260612_083835_19e1734d-fe4a-4b2f-8673-9523d8a75068.mp4"
+  },
+  "about": {
+    "eyebrow": "Who you're actually hiring",
+    "heading": "A real contractor. Not a call center.",
+    "paragraph1": "Most contractors hand you off to a project manager you'll meet once. Not here. Noe is on your job — planning it, building it, and answering your texts. People keep using the same word in their reviews: honest. That's the whole business.",
+    "paragraph2": "Kitchens and baths are our bread and butter, but we build from the ground up too — additions, foundations, framing, roofing, the works. Clean job sites. Fair prices. Timelines we actually hit. And we show up after the project's done if you need us.",
+    "photo": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1100&q=80",
+    "photoCaption": "On the tools, every job",
+    "photoLocation": "San Jose, CA"
+  },
+  "services": [
+    { "title": "Kitchen Remodels", "description": "Full gut-and-rebuild or a smart refresh — cabinets, counters, islands, the layout that finally makes sense.", "tags": "Custom cabinets, Granite & quartz, Cabinet refacing, Islands" },
+    { "title": "Bathroom Remodels", "description": "Spa-grade walk-in showers, tile work, vanities, and fixtures. Our most-reviewed work, for good reason.", "tags": "Tile & stone, Walk-in showers, Waterproofing, Fixtures" },
+    { "title": "Whole-Home Renovations", "description": "Living rooms, family rooms, closets, top to bottom. We've turned tired floor plans into \"luxury showcase\" — their words.", "tags": "Open-concept, Load-bearing walls, Master suites" },
+    { "title": "Additions & New Builds", "description": "Home additions, accessory buildings, ground-up construction. Foundations poured, framed, and finished by one crew.", "tags": "Home additions, Foundations, ADUs & accessory" },
+    { "title": "Flooring", "description": "Hardwood, luxury vinyl, tile, and repairs. \"Feels like something out of a luxury showcase,\" said Sheila. We'll take it.", "tags": "Luxury vinyl, Hardwood, Tile, Repair" },
+    { "title": "Exterior & Structural", "description": "Siding, fascia, roof repair, decks, patios, porches, concrete, and structural repairs. Left clean, finished on time.", "tags": "Siding & fascia, Roofing, Decks & patios, Concrete" }
+  ],
+  "reviews": [
+    { "quote": "\"I would like to give 10 stars.\" Fantastic job on our kitchen and family room. Noe, the owner, was directly involved — which was important to us — and communicated every step of the way.", "name": "P. Nacino", "detail": "Kitchen & family room", "reply": "The kitchen and living room remodels were fun projects. We hope you have more in store for us." },
+    { "quote": "They transformed our old spaces into something beautiful and functional. Did a wonderful job on the bathroom and the condo remodel — and great price.", "name": "Dr. Hyung Lee", "detail": "Bathroom & condo remodel", "reply": "" },
+    { "quote": "Noe took the time to explain what needed to be done, offered helpful suggestions, and got it right. Professional, punctual, and very skilled.", "name": "Conrad", "detail": "Multiple home projects", "reply": "" },
+    { "quote": "Noe is transparent in his approach, hardworking and fairly priced. Fixed a plumbing leak at a very good price, repaired window frames and roof tiles, replaced fixtures. Inside and out.", "name": "Satheesh G.", "detail": "Plumbing, windows & roof", "reply": "" },
+    { "quote": "\"HIGHLY RECOMMEND.\" Honest, communicative, excellent service. Noe worked well with my senior parents and gave honest feedback. Even the prep work was thorough.", "name": "Jill Grande", "detail": "Home remodel", "reply": "It was great to work with you and your parents. I hope everyone is enjoying their new space!" },
+    { "quote": "Completely transformed our floors and elevated our home to another level — it truly feels like something out of a luxury showcase. The attention to detail and the patience Noe brings to his work is unmatched.", "name": "Sheila Raines", "detail": "Flooring", "reply": "" },
+    { "quote": "Noe truly listened to our ideas, helped us choose the perfect materials, and offered thoughtful advice whenever we needed it. Transformed our family room into the space we imagined.", "name": "Gisela Nacino", "detail": "Family room", "reply": "" },
+    { "quote": "I've known this guy for over 10 years and he is an honest, hard-working guy. Does great kitchen and bathroom remodels, or builds from the ground up. You're in great hands.", "name": "Alex Leon", "detail": "Local Guide · 10-year client", "reply": "" },
+    { "quote": "Repaired and replaced fascia and siding on my home exterior. Pleasant and respectful, finished in the estimated time, left the area clean. The work looked great.", "name": "Raymond Lim", "detail": "Exterior · siding & fascia", "reply": "" },
+    { "quote": "Easy to work with even when there are plan changes. Used them for my residence and my rental — a very good contractor. Glad I chose them.", "name": "Efren Esposo", "detail": "Residence & rental", "reply": "" },
+    { "quote": "Located in San Jose, so it was fast to book a consultation. Really easy to work with and very attentive to your needs. Excellent job on my bathroom.", "name": "Joshua Guzman", "detail": "Bathroom remodel", "reply": "" },
+    { "quote": "Best of the best in San Jose. Wouldn't choose anyone else. I recommend them to all my friends and family, and they all appreciate the excellent work.", "name": "Raul Lozano", "detail": "Bathroom remodel", "reply": "" }
+  ],
+  "gallery": [
+    { "image": "https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&w=1300&q=80", "title": "Kitchen, Willow Glen", "sub": "Full remodel", "size": "wide" },
+    { "image": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1100&q=80", "title": "Master Bath", "sub": "Tile & walk-in shower", "size": "tall" },
+    { "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80", "title": "Family Room", "sub": "Renovation", "size": "half" },
+    { "image": "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80", "title": "Bedroom & Floors", "sub": "Luxury vinyl", "size": "half" },
+    { "image": "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?auto=format&fit=crop&w=900&q=80", "title": "Guest Bath", "sub": "Fixtures & tile", "size": "half" }
+  ],
+  "contactSection": {
+    "eyebrow": "Free estimate",
+    "heading": "Let's build something you'll actually love.",
+    "text": "Tell us about your project and Noe will get back to you — usually same day. Kitchens, baths, additions, repairs, the whole house. San Jose and the South Bay."
+  }
+}

@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ocean General Contractors — San Jose Remodels Done Right</title>
+<meta name="description" content="Ocean General Contractors. Owner-operated remodels in San Jose, CA. Kitchens, bathrooms, whole-home renovations, flooring, additions. Done right, communicated every step. 5.0 on Google." />
+
+<!-- Fonts: Fraunces (optical serif display) + Archivo (sturdy grotesque). No Inter/Roboto. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
+
+<!-- Three.js for the interactive 3D house blueprint -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+:root{
+  --ink:#15120e;            /* warm near-black */
+  --ink-2:#211c16;
+  --paper:#f4ecdf;          /* bone / paper */
+  --paper-2:#eae0cf;
+  --pacific:#0f3d37;        /* deep pacific green */
+  --pacific-2:#1c5d53;
+  --clay:#c85a35;           /* warm terracotta accent */
+  --clay-2:#e0703f;
+  --brass:#c39b4e;          /* brass / sand */
+  --line:rgba(21,18,14,.14);
+  --line-soft:rgba(21,18,14,.08);
+  --shadow:0 30px 60px -25px rgba(21,18,14,.45);
+  --ease:cubic-bezier(.16,1,.3,1);
+  --mw:1280px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Archivo",system-ui,sans-serif;
+  font-size:clamp(16px,1.05vw,18px);
+  line-height:1.55;
+  overflow-x:hidden;
+  font-feature-settings:"ss01","kern","liga";
+}
+::selection{background:var(--clay);color:var(--paper)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+h1,h2,h3,.serif{
+  font-family:"Fraunces",Georgia,serif;
+  font-weight:500;
+  line-height:.98;
+  letter-spacing:-.015em;
+  text-wrap:balance;
+}
+.italic{font-style:italic;font-weight:400}
+
+/* Eyebrow / small-caps label */
+.eyebrow{
+  font-size:.72rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:.7em;color:var(--pacific-2);
+}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--clay);display:inline-block}
+.eyebrow.on-dark{color:var(--brass)}
+.eyebrow.on-dark::before{background:var(--clay-2)}
+
+.wrap{max-width:var(--mw);margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- Buttons ---------- */
+.btn{
+  --bg:var(--ink);--fg:var(--paper);
+  position:relative;display:inline-flex;align-items:center;gap:.6em;
+  padding:1.05em 1.7em;border-radius:999px;background:var(--bg);color:var(--fg);
+  font-weight:600;font-size:.92rem;letter-spacing:.01em;cursor:pointer;border:none;
+  overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s var(--ease);
+}
+.btn span{position:relative;z-index:2}
+.btn::after{
+  content:"";position:absolute;inset:0;z-index:1;background:var(--clay);
+  transform:translateY(101%);transition:transform .55s var(--ease);
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 18px 30px -14px rgba(21,18,14,.5)}
+.btn:hover::after{transform:translateY(0)}
+.btn.ghost{--bg:transparent;--fg:var(--ink);border:1px solid var(--line)}
+.btn.ghost::after{background:var(--ink)}
+.btn.ghost:hover{--fg:var(--paper)}
+.btn .arrow{transition:transform .5s var(--ease)}
+.btn:hover .arrow{transform:translate(4px,-4px)}
+
+/* ---------- Header ---------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  transition:background .5s var(--ease),box-shadow .5s var(--ease),padding .5s var(--ease);
+  padding:22px 0;
+}
+header.scrolled{background:rgba(244,236,223,.86);backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line-soft);padding:13px 0}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:-.01em}
+.brand .mark{
+  width:34px;height:34px;border-radius:9px;flex:none;position:relative;overflow:hidden;
+  background:var(--pacific);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15);
+}
+.brand .mark::before,.brand .mark::after{content:"";position:absolute;left:0;right:0;height:33%}
+.brand .mark::before{top:0;background:var(--clay)}
+.brand .mark::after{bottom:0;background:var(--brass)}
+.brand .wave{position:absolute;inset:0;background:
+  radial-gradient(120% 60% at 50% 120%, rgba(255,255,255,.35), transparent 60%)}
+.brand b{font-family:"Fraunces";font-weight:600;font-size:1.18rem}
+.brand small{display:block;font-family:"Archivo";font-weight:500;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--pacific-2);margin-top:1px}
+.nav-links{display:flex;align-items:center;gap:34px}
+.nav-links a.link{font-weight:500;font-size:.95rem;position:relative;padding:4px 0;color:var(--ink)}
+.nav-links a.link::after{content:"";position:absolute;left:0;bottom:0;height:1.5px;width:0;background:var(--clay);transition:width .4s var(--ease)}
+.nav-links a.link:hover::after{width:100%}
+.nav-cta{display:flex;align-items:center;gap:16px}
+.burger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:8px}
+.burger span{width:24px;height:2px;background:var(--ink);transition:.35s var(--ease)}
+
+/* ---------- Hero / cinematic film ---------- */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;color:var(--paper)}
+.hero-film{position:absolute;inset:0;z-index:0;background:var(--ink)}
+.hero-film .hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;background:var(--ink)}
+.hero-film .frame{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+  opacity:0;animation:kenburns 24s infinite;will-change:transform,opacity;
+}
+.hero-film .frame:nth-child(1){background-image:linear-gradient(45deg,#2a2118,#3a2c1f),url("https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&w=1900&q=80");animation-delay:0s}
+.hero-film .frame:nth-child(2){background-image:linear-gradient(45deg,#1e2622,#2c3a34),url("https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1900&q=80");animation-delay:6s}
+.hero-film .frame:nth-child(3){background-image:linear-gradient(45deg,#2a2118,#3a2c1f),url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1900&q=80");animation-delay:12s}
+.hero-film .frame:nth-child(4){background-image:linear-gradient(45deg,#241d16,#34281c),url("https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1900&q=80");animation-delay:18s}
+@keyframes kenburns{
+  0%{opacity:0;transform:scale(1.12)}
+  6%{opacity:1}
+  25%{opacity:1;transform:scale(1.02)}
+  31%{opacity:0;transform:scale(1)}
+  100%{opacity:0}
+}
+.hero-grain{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  animation:grain 1.2s steps(3) infinite}
+@keyframes grain{0%{transform:translate(0,0)}33%{transform:translate(-3%,2%)}66%{transform:translate(2%,-3%)}100%{transform:translate(0,0)}}
+.hero-tint{position:absolute;inset:0;z-index:1;background:
+  linear-gradient(180deg,rgba(15,18,14,.55) 0%,rgba(15,18,14,.15) 32%,rgba(15,18,14,.35) 60%,rgba(15,14,11,.92) 100%),
+  radial-gradient(120% 80% at 80% 10%, rgba(200,90,53,.22), transparent 55%)}
+.hero-sweep{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:soft-light;opacity:.7;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,244,224,.5) 48%,transparent 66%);
+  background-size:240% 100%;animation:sweep 9s var(--ease) infinite}
+@keyframes sweep{0%{background-position:140% 0}55%,100%{background-position:-60% 0}}
+
+.hero-inner{position:relative;z-index:3;width:100%;max-width:var(--mw);margin:0 auto;padding:0 clamp(20px,5vw,64px) clamp(40px,7vh,80px)}
+.hero-top{position:absolute;top:clamp(96px,14vh,150px);left:clamp(20px,5vw,64px);right:clamp(20px,5vw,64px);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+.hero-loc{font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;font-weight:600;color:rgba(244,236,223,.82)}
+.hero-rating{text-align:right;font-size:.8rem;letter-spacing:.02em;color:rgba(244,236,223,.9)}
+.hero-rating .stars{color:var(--brass);letter-spacing:.15em;font-size:1rem}
+
+.hero h1{
+  font-size:clamp(3rem,9.2vw,9rem);font-weight:600;letter-spacing:-.03em;line-height:.9;
+  max-width:14ch;
+}
+.hero h1 .italic{color:var(--brass)}
+.hero h1 .em{color:var(--clay-2)}
+.hero-sub{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:28px;margin-top:clamp(24px,4vh,40px)}
+.hero-sub p{max-width:46ch;font-size:clamp(1rem,1.4vw,1.18rem);color:rgba(244,236,223,.9);line-height:1.5}
+.hero-sub p b{color:var(--paper);font-weight:600}
+.hero-actions{display:flex;align-items:center;gap:14px;flex:none}
+.hero .btn{--bg:var(--paper);--fg:var(--ink)}
+.hero .btn::after{background:var(--clay)}
+.hero .btn:hover{--fg:var(--paper)}
+.hero .btn.ghost{--bg:transparent;--fg:var(--paper);border-color:rgba(244,236,223,.5)}
+.hero .btn.ghost::after{background:var(--paper)}
+.hero .btn.ghost:hover{--fg:var(--ink)}
+
+.scrollcue{position:absolute;bottom:26px;right:clamp(20px,5vw,64px);z-index:3;display:flex;align-items:center;gap:10px;
+  font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(244,236,223,.7)}
+.scrollcue i{width:1px;height:42px;background:rgba(244,236,223,.5);position:relative;overflow:hidden;display:block}
+.scrollcue i::after{content:"";position:absolute;top:-50%;left:0;width:100%;height:50%;background:var(--clay-2);animation:drop 1.8s var(--ease) infinite}
+@keyframes drop{0%{top:-50%}100%{top:100%}}
+
+/* ---------- Marquee ---------- */
+.marquee{background:var(--ink);color:var(--paper);overflow:hidden;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)}
+.marquee .track{display:flex;gap:0;white-space:nowrap;width:max-content;animation:scroll-x 38s linear infinite}
+.marquee:hover .track{animation-play-state:paused}
+.marquee .item{font-family:"Fraunces";font-size:clamp(1.1rem,2vw,1.7rem);font-weight:500;padding:18px 34px;display:flex;align-items:center;gap:34px}
+.marquee .item::after{content:"✦";color:var(--clay-2);font-size:.7em}
+@keyframes scroll-x{to{transform:translateX(-50%)}}
+
+/* ---------- Section scaffolding ---------- */
+section{position:relative}
+.pad{padding:clamp(80px,12vh,150px) 0}
+.sec-head{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:end;margin-bottom:clamp(40px,6vh,72px)}
+.sec-head h2{font-size:clamp(2.2rem,5.2vw,4.4rem);font-weight:600}
+.sec-head .lead{color:rgba(21,18,14,.72);font-size:clamp(1rem,1.3vw,1.15rem);max-width:42ch}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.4s}
+
+/* ---------- Owner / intro ---------- */
+.owner{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(36px,6vw,80px);align-items:center}
+.owner .copy h2{font-size:clamp(2rem,4.4vw,3.7rem);margin-bottom:26px}
+.owner .copy p{color:rgba(21,18,14,.78);margin-bottom:18px;font-size:clamp(1.02rem,1.25vw,1.16rem)}
+.owner .copy .signoff{display:flex;align-items:center;gap:16px;margin-top:32px}
+.owner .copy .signoff .sig{font-family:"Fraunces";font-style:italic;font-size:1.7rem;color:var(--pacific)}
+.owner .copy .signoff small{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(21,18,14,.55);font-weight:600}
+.owner-photo{position:relative;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:var(--pacific);box-shadow:var(--shadow)}
+.owner-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(1.02) contrast(1.02)}
+.owner-photo .tag{position:absolute;left:18px;bottom:18px;right:18px;display:flex;justify-content:space-between;align-items:flex-end;
+  color:var(--paper);text-shadow:0 1px 12px rgba(0,0,0,.5)}
+.owner-photo .tag b{font-family:"Fraunces";font-size:1.3rem;font-weight:600}
+.owner-photo .tag span{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+
+/* ---------- Stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:clamp(48px,7vh,80px)}
+.stat{background:var(--paper);padding:clamp(24px,3.4vw,40px)}
+.stat .n{font-family:"Fraunces";font-size:clamp(2.4rem,4.6vw,3.6rem);font-weight:600;line-height:1;color:var(--pacific);letter-spacing:-.02em}
+.stat .n sup{font-size:.45em;color:var(--clay);vertical-align:super;margin-left:.05em}
+.stat .l{margin-top:10px;font-size:.82rem;letter-spacing:.04em;color:rgba(21,18,14,.62)}
+
+/* ---------- Services ---------- */
+#services{background:var(--ink);color:var(--paper)}
+#services .sec-head h2{color:var(--paper)}
+#services .sec-head .lead{color:rgba(244,236,223,.66)}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden}
+.svc{background:var(--ink);padding:clamp(26px,3vw,40px);min-height:230px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;transition:background .5s var(--ease)}
+.svc::before{content:"";position:absolute;inset:0;background:linear-gradient(160deg,var(--pacific),var(--ink) 70%);opacity:0;transition:opacity .55s var(--ease)}
+.svc:hover{background:var(--pacific)}
+.svc>*{position:relative;z-index:2}
+.svc .num{font-size:.72rem;letter-spacing:.2em;color:var(--brass);font-weight:600}
+.svc h3{font-size:clamp(1.5rem,2.2vw,2rem);font-weight:600;margin:16px 0 12px}
+.svc p{color:rgba(244,236,223,.66);font-size:.95rem;line-height:1.5;transition:color .5s var(--ease)}
+.svc:hover p{color:rgba(244,236,223,.92)}
+.svc .tags{margin-top:18px;display:flex;flex-wrap:wrap;gap:7px}
+.svc .tags span{font-size:.72rem;padding:5px 11px;border:1px solid rgba(255,255,255,.16);border-radius:999px;color:rgba(244,236,223,.82)}
+.svc .ic{position:absolute;top:clamp(26px,3vw,40px);right:clamp(26px,3vw,40px);width:26px;height:26px;color:var(--clay-2);opacity:.9}
+
+/* ---------- 3D Spline section ---------- */
+#built{background:radial-gradient(120% 120% at 70% 0%, #122e2a 0%, #0c0a08 60%);color:var(--paper);overflow:hidden}
+.built-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(24px,4vw,56px);align-items:center}
+.built-copy h2{font-size:clamp(2.2rem,4.8vw,4rem);font-weight:600;margin-bottom:24px}
+.built-copy h2 .italic{color:var(--brass)}
+.built-copy p{color:rgba(244,236,223,.72);max-width:44ch;margin-bottom:18px}
+.built-list{margin-top:30px;display:grid;gap:14px}
+.built-list .row{display:flex;gap:14px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.built-list .row b{font-family:"Fraunces";color:var(--brass);font-size:1.05rem;flex:none;width:2.2em}
+.built-list .row span{color:rgba(244,236,223,.82);font-size:.96rem}
+.spline-stage{position:relative;height:clamp(360px,52vh,560px);border-radius:20px;overflow:hidden;
+  background:radial-gradient(circle at 50% 42%, #163a35, #0a0807 72%);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.08);cursor:grab}
+.spline-stage:active{cursor:grabbing}
+.spline-stage canvas{display:block;width:100%;height:100%}
+.spline-stage .grid-bg{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(195,155,78,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(195,155,78,.10) 1px,transparent 1px);
+  background-size:34px 34px;mask-image:radial-gradient(circle at 50% 50%,#000 35%,transparent 78%)}
+.spline-stage .stamp{position:absolute;top:16px;right:18px;z-index:5;font-family:"Fraunces";font-style:italic;font-size:.86rem;color:var(--brass);opacity:.8}
+.spline-stage .hint{position:absolute;left:18px;bottom:16px;z-index:5;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,236,223,.6);display:flex;align-items:center;gap:9px}
+.spline-stage .hint .dot{width:7px;height:7px;border-radius:50%;background:var(--clay-2);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
+
+/* ---------- Gallery / parallax ---------- */
+.gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(14px,1.6vw,22px)}
+.gtile{position:relative;overflow:hidden;border-radius:14px;background:var(--paper-2);box-shadow:0 18px 40px -28px rgba(21,18,14,.5)}
+.gtile img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease);will-change:transform}
+.gtile:hover img{transform:scale(1.06)}
+.gtile .cap{position:absolute;left:16px;bottom:14px;color:var(--paper);text-shadow:0 1px 14px rgba(0,0,0,.6);z-index:2}
+.gtile .cap b{font-family:"Fraunces";font-size:1.15rem;font-weight:600;display:block}
+.gtile .cap span{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.gtile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(15,14,11,.6));z-index:1}
+.gtile.tall{grid-column:span 5;aspect-ratio:4/5}
+.gtile.wide{grid-column:span 7;aspect-ratio:16/10}
+.gtile.half{grid-column:span 4;aspect-ratio:1/1}
+.gtile .par{position:absolute;inset:-12% 0;width:100%;height:124%}
+
+/* ---------- Reviews ---------- */
+#reviews{background:linear-gradient(180deg,var(--paper) 0%,var(--paper-2) 100%)}
+.rev-top{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:46px}
+.rev-top h2{font-size:clamp(2.2rem,5vw,4.2rem);font-weight:600}
+.rev-score{display:flex;align-items:center;gap:18px}
+.rev-score .big{font-family:"Fraunces";font-size:3.6rem;font-weight:600;line-height:1;color:var(--pacific)}
+.rev-score .stars{color:var(--brass);font-size:1.2rem;letter-spacing:.1em}
+.rev-score small{display:block;font-size:.78rem;letter-spacing:.04em;color:rgba(21,18,14,.6);margin-top:4px}
+.rev-cols{columns:3;column-gap:clamp(16px,1.6vw,22px)}
+.rev{break-inside:avoid;margin-bottom:clamp(16px,1.6vw,22px);background:var(--paper);border:1px solid var(--line-soft);border-radius:16px;padding:26px;box-shadow:0 14px 34px -28px rgba(21,18,14,.5);transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.rev:hover{transform:translateY(-4px);box-shadow:0 26px 44px -28px rgba(21,18,14,.55)}
+.rev .stars{color:var(--brass);letter-spacing:.12em;font-size:.95rem;margin-bottom:14px}
+.rev p{font-size:1.02rem;line-height:1.5;color:var(--ink)}
+.rev p .lead-q{font-family:"Fraunces";font-size:1.18rem}
+.rev .who{display:flex;align-items:center;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)}
+.rev .who .av{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;color:var(--paper);font-weight:700;font-family:"Fraunces"}
+.rev .who b{font-weight:600;font-size:.95rem}
+.rev .who span{display:block;font-size:.76rem;color:rgba(21,18,14,.55)}
+.rev .reply{margin-top:14px;padding:14px;background:var(--pacific);color:var(--paper);border-radius:11px;font-size:.88rem;line-height:1.45}
+.rev .reply b{color:var(--brass);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:5px}
+
+/* ---------- Process ---------- */
+#process{background:var(--pacific);color:var(--paper)}
+#process .sec-head h2{color:var(--paper)}
+#process .sec-head .lead{color:rgba(244,236,223,.72)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2vw,30px);counter-reset:step}
+.step{position:relative;padding-top:30px;border-top:2px solid rgba(255,255,255,.22)}
+.step .n{font-family:"Fraunces";font-size:3rem;font-weight:600;color:var(--brass);line-height:1}
+.step h3{font-size:1.4rem;font-weight:600;margin:14px 0 10px}
+.step p{color:rgba(244,236,223,.78);font-size:.95rem;line-height:1.5}
+
+/* ---------- Contact ---------- */
+#contact{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+.shader-bg{position:absolute;inset:0;z-index:0;opacity:.6}
+.shader-bg canvas{display:block;width:100%!important;height:100%!important}
+.shader-bg::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(21,18,14,.78) 0%,rgba(21,18,14,.35) 45%,rgba(21,18,14,.7) 100%),
+  radial-gradient(120% 90% at 50% 120%, transparent 40%, rgba(12,10,8,.85))}
+#contact .wrap{position:relative;z-index:2}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,90px)}
+.contact-copy h2{font-size:clamp(2.4rem,5.4vw,4.6rem);font-weight:600;margin-bottom:22px}
+.contact-copy h2 .italic{color:var(--brass)}
+.contact-copy p{color:rgba(244,236,223,.74);max-width:42ch;margin-bottom:30px}
+.contact-info{display:grid;gap:22px;margin-top:34px}
+.cinfo{display:flex;gap:16px;align-items:flex-start}
+.cinfo .ic{width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.06);display:grid;place-items:center;flex:none;color:var(--brass)}
+.cinfo b{display:block;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,236,223,.55);margin-bottom:3px;font-weight:600}
+.cinfo a,.cinfo span{font-family:"Fraunces";font-size:1.25rem;color:var(--paper)}
+form .field{margin-bottom:18px}
+form label{display:block;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,236,223,.6);margin-bottom:8px;font-weight:600}
+form input,form select,form textarea{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);border-radius:11px;
+  padding:14px 16px;color:var(--paper);font-family:"Archivo";font-size:1rem;transition:border-color .35s,background .35s}
+form input::placeholder,form textarea::placeholder{color:rgba(244,236,223,.4)}
+form input:focus,form select:focus,form textarea:focus{outline:none;border-color:var(--clay-2);background:rgba(255,255,255,.07)}
+form select option{color:#111}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+form .btn{width:100%;justify-content:center;--bg:var(--clay);--fg:var(--paper)}
+form .btn::after{background:var(--paper)}
+form .btn:hover{--fg:var(--ink)}
+.form-note{font-size:.8rem;color:rgba(244,236,223,.5);margin-top:14px;text-align:center}
+
+/* ---------- Footer ---------- */
+footer{background:#0c0a08;color:rgba(244,236,223,.7);padding:60px 0 34px}
+.foot-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.08)}
+.foot-brand b{font-family:"Fraunces";color:var(--paper);font-size:1.4rem;display:block;margin-bottom:8px}
+.foot-cols{display:flex;gap:clamp(40px,6vw,90px);flex-wrap:wrap}
+.foot-col b{display:block;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,236,223,.45);margin-bottom:14px;font-weight:600}
+.foot-col a{display:block;margin-bottom:9px;font-size:.95rem;color:rgba(244,236,223,.78);transition:color .3s}
+.foot-col a:hover{color:var(--clay-2)}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:24px;font-size:.82rem;color:rgba(244,236,223,.45)}
+
+/* ---------- Responsive ---------- */
+@media(max-width:1024px){
+  .sec-head{grid-template-columns:1fr}
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .owner,.built-grid,.contact-grid{grid-template-columns:1fr}
+  .built-grid .spline-stage{order:-1}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .rev-cols{columns:2}
+  .owner-photo{max-width:460px}
+}
+@media(max-width:680px){
+  .nav-links{position:fixed;inset:0 0 0 auto;width:min(80vw,320px);background:var(--ink);color:var(--paper);
+    flex-direction:column;align-items:flex-start;justify-content:center;padding:40px;gap:26px;
+    transform:translateX(100%);transition:transform .5s var(--ease);z-index:95}
+  .nav-links.open{transform:none}
+  .nav-links a.link{color:var(--paper);font-size:1.3rem;font-family:"Fraunces"}
+  .nav-links .btn{--bg:var(--clay);--fg:var(--paper)}
+  .burger{display:flex;z-index:96}
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger.open span:nth-child(2){opacity:0}
+  .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .nav-cta .btn:not(.burger){display:none}
+  .svc-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr}
+  .rev-cols{columns:1}
+  .gallery{grid-template-columns:1fr}
+  .gtile.tall,.gtile.wide,.gtile.half{grid-column:1/-1;aspect-ratio:4/3}
+  .form-row{grid-template-columns:1fr}
+  .hero-sub{flex-direction:column;align-items:flex-start}
+  .hero h1{font-size:clamp(2.8rem,13vw,5rem)}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  .hero-film .frame:nth-child(1){opacity:1}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header id="hdr">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Ocean General Contractors home">
+      <span class="mark"><span class="wave"></span></span>
+      <span><b>Ocean</b><small>General Contractors</small></span>
+    </a>
+    <nav class="nav-links" id="navlinks">
+      <a class="link" href="#work">The Work</a>
+      <a class="link" href="#services">Services</a>
+      <a class="link" href="#reviews">Reviews</a>
+      <a class="link" href="#process">How We Work</a>
+      <a class="btn" href="#contact"><span>Get a free estimate</span></a>
+    </nav>
+    <div class="nav-cta">
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<span id="top"></span>
+
+<!-- ============ HERO ============ -->
+<section class="hero" aria-label="Intro">
+  <!-- Hero background: generated .mp4 footage with a ken-burns image film as fallback. -->
+  <div class="hero-film" aria-hidden="true">
+    <!-- Real generated footage (cinematic kitchen dolly). Image film below is the fallback if the video can't load. -->
+    <video class="hero-vid" autoplay muted loop playsinline preload="auto"
+           poster="https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&w=1900&q=80"
+           onerror="this.style.display='none'">
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_3F1bV9SXo9rw18UWV9g3FTg9DFs/hf_20260612_083835_19e1734d-fe4a-4b2f-8673-9523d8a75068.mp4" type="video/mp4">
+    </video>
+    <div class="frame"></div>
+    <div class="frame"></div>
+    <div class="frame"></div>
+    <div class="frame"></div>
+  </div>
+  <div class="hero-tint"></div>
+  <div class="hero-sweep"></div>
+  <div class="hero-grain"></div>
+
+  <div class="hero-top">
+    <div class="hero-loc">San Jose · California · Est. owner-run</div>
+    <div class="hero-rating"><span class="stars">★★★★★</span><br>5.0 on Google · 30+ reviews</div>
+  </div>
+
+  <div class="hero-inner">
+    <h1 class="reveal in">We don't just<br>finish the job.<br><span class="italic">We finish it</span> <span class="em">right.</span></h1>
+    <div class="hero-sub">
+      <p class="reveal d1 in"><b>Ocean General Contractors</b> remodels kitchens, baths, and whole homes across San Jose. Owner-operated by Noe Guzman — so the guy who quotes the job is the guy who shows up to do it.</p>
+      <div class="hero-actions reveal d2 in">
+        <a class="btn" href="#contact"><span>Get a free estimate</span> <span class="arrow">↗</span></a>
+        <a class="btn ghost" href="#work"><span>See the work</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="scrollcue"><span>Scroll</span><i></i></div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="track" id="track">
+    <div class="item">Kitchen Remodels</div><div class="item">Bathroom Remodels</div><div class="item">Whole-Home Renovations</div><div class="item">Flooring</div><div class="item">Additions</div><div class="item">Decks &amp; Patios</div><div class="item">Concrete &amp; Foundations</div><div class="item">Roofing &amp; Siding</div><div class="item">Custom Cabinetry</div><div class="item">Tile &amp; Masonry</div>
+  </div>
+</div>
+
+<!-- ============ OWNER / INTRO ============ -->
+<section class="pad" id="about">
+  <div class="wrap owner">
+    <div class="copy">
+      <span class="eyebrow reveal">Who you're actually hiring</span>
+      <h2 class="reveal d1">A real contractor.<br>Not a call center.</h2>
+      <p class="reveal d2">Most contractors hand you off to a project manager you'll meet once. Not here. Noe is on your job — planning it, building it, and answering your texts. People keep using the same word in their reviews: <em>honest</em>. That's the whole business.</p>
+      <p class="reveal d3">Kitchens and baths are our bread and butter, but we build from the ground up too — additions, foundations, framing, roofing, the works. Clean job sites. Fair prices. Timelines we actually hit. And we show up after the project's done if you need us.</p>
+      <div class="signoff reveal d4">
+        <span class="sig">Noe Guzman</span>
+        <small>Owner &amp; lead builder</small>
+      </div>
+    </div>
+    <div class="owner-photo reveal d2">
+      <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1100&q=80" alt="Contractor at work on a remodel" loading="lazy" onerror="this.style.display='none'">
+      <div class="tag"><b>On the tools, every job</b><span>San Jose, CA</span></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="stats reveal">
+      <div class="stat"><div class="n" data-count="5.0" data-dec="1">0.0<sup>★</sup></div><div class="l">Average Google rating</div></div>
+      <div class="stat"><div class="n" data-count="30" data-suffix="+">0</div><div class="l">Five-star reviews &amp; counting</div></div>
+      <div class="stat"><div class="n" data-count="100" data-suffix="%">0</div><div class="l">Owner-involved projects</div></div>
+      <div class="stat"><div class="n" data-count="40" data-suffix="+">0</div><div class="l">Services under one roof</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="pad" id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Everything from a<br>leaky faucet to a<br>second story.</h2>
+      <p class="lead">One crew, one point of contact, for the whole house. Here's what we get asked for most — but if it's not listed, ask. We've probably done it.</p>
+    </div>
+
+    <div class="svc-grid">
+      <div class="svc reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9h18M5 9V5a2 2 0 012-2h10a2 2 0 012 2v4M7 13h2m-2 4h2m4-4h4m-4 4h4"/><rect x="3" y="9" width="18" height="12" rx="1.5"/></svg>
+        <div class="num">01</div>
+        <div><h3>Kitchen Remodels</h3><p>Full gut-and-rebuild or a smart refresh — cabinets, counters, islands, the layout that finally makes sense.</p></div>
+        <div class="tags"><span>Custom cabinets</span><span>Granite &amp; quartz</span><span>Cabinet refacing</span><span>Islands</span></div>
+      </div>
+      <div class="svc reveal d1">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12V6a2 2 0 012-2h1a2 2 0 012 2M4 12h16v3a4 4 0 01-4 4H8a4 4 0 01-4-4v-3zM6 19l-1 2m13-2l1 2"/></svg>
+        <div class="num">02</div>
+        <div><h3>Bathroom Remodels</h3><p>Spa-grade walk-in showers, tile work, vanities, and fixtures. Our most-reviewed work, for good reason.</p></div>
+        <div class="tags"><span>Tile &amp; stone</span><span>Walk-in showers</span><span>Waterproofing</span><span>Fixtures</span></div>
+      </div>
+      <div class="svc reveal d2">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11l9-7 9 7M5 10v9h14v-9M9 19v-5h6v5"/></svg>
+        <div class="num">03</div>
+        <div><h3>Whole-Home Renovations</h3><p>Living rooms, family rooms, closets, top to bottom. We've turned tired floor plans into "luxury showcase" — their words.</p></div>
+        <div class="tags"><span>Open-concept</span><span>Load-bearing walls</span><span>Master suites</span></div>
+      </div>
+      <div class="svc reveal">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7l9-4 9 4-9 4-9-4zM3 7v10l9 4 9-4V7M12 11v10"/></svg>
+        <div class="num">04</div>
+        <div><h3>Additions &amp; New Builds</h3><p>Home additions, accessory buildings, ground-up construction. Foundations poured, framed, and finished by one crew.</p></div>
+        <div class="tags"><span>Home additions</span><span>Foundations</span><span>ADUs &amp; accessory</span></div>
+      </div>
+      <div class="svc reveal d1">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 16h18M3 16l3-9h12l3 9M7 16v4m10-4v4M9 11h6"/></svg>
+        <div class="num">05</div>
+        <div><h3>Flooring</h3><p>Hardwood, luxury vinyl, tile, and repairs. "Feels like something out of a luxury showcase," said Sheila. We'll take it.</p></div>
+        <div class="tags"><span>Luxury vinyl</span><span>Hardwood</span><span>Tile</span><span>Repair</span></div>
+      </div>
+      <div class="svc reveal d2">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6M14 8h.01"/></svg>
+        <div class="num">06</div>
+        <div><h3>Exterior &amp; Structural</h3><p>Siding, fascia, roof repair, decks, patios, porches, concrete, and structural repairs. Left clean, finished on time.</p></div>
+        <div class="tags"><span>Siding &amp; fascia</span><span>Roofing</span><span>Decks &amp; patios</span><span>Concrete</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3D / SPLINE ============ -->
+<section class="pad" id="built">
+  <div class="wrap built-grid">
+    <div class="built-copy">
+      <span class="eyebrow on-dark reveal">Planned before we build</span>
+      <h2 class="reveal d1">We measure twice.<br><span class="italic">Then twice more.</span></h2>
+      <p class="reveal d2">Drag the model around. Every project starts with a real plan — so there are no "surprises" halfway through that cost you a weekend and a thousand bucks.</p>
+      <div class="built-list">
+        <div class="row reveal d2"><b>01</b><span>You get a clear scope and a straight price before anyone swings a hammer.</span></div>
+        <div class="row reveal d3"><b>02</b><span>Changes happen — we roll with them and tell you what they actually cost.</span></div>
+        <div class="row reveal d4"><b>03</b><span>Daily updates. You always know what's happening on your house.</span></div>
+      </div>
+    </div>
+    <div class="spline-stage reveal d2" id="houseStage">
+      <div class="grid-bg"></div>
+      <canvas id="houseCanvas"></canvas>
+      <div class="stamp">Plan view · OGC</div>
+      <div class="hint"><span class="dot"></span>Drag to rotate</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY / WORK ============ -->
+<section class="pad" id="work">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>The proof is<br>in the finish.</h2>
+      <p class="lead">Kitchens, baths, floors, and full renovations across the South Bay. Photography is illustrative of the kind of work we deliver.</p>
+    </div>
+    <div class="gallery">
+      <div class="gtile wide reveal"><div class="par" data-par="20"><img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&w=1300&q=80" alt="Modern kitchen remodel" loading="lazy" onerror="this.closest('.gtile').style.background='linear-gradient(135deg,var(--pacific),var(--ink))'"></div><div class="cap"><b>Kitchen, Willow Glen</b><span>Full remodel</span></div></div>
+      <div class="gtile tall reveal d1"><div class="par" data-par="28"><img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1100&q=80" alt="Spa bathroom remodel" loading="lazy" onerror="this.closest('.gtile').style.background='linear-gradient(135deg,var(--clay),var(--ink))'"></div><div class="cap"><b>Master Bath</b><span>Tile &amp; walk-in shower</span></div></div>
+      <div class="gtile half reveal"><div class="par" data-par="22"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" alt="Living room renovation" loading="lazy" onerror="this.closest('.gtile').style.background='linear-gradient(135deg,var(--brass),var(--ink))'"></div><div class="cap"><b>Family Room</b><span>Renovation</span></div></div>
+      <div class="gtile half reveal d1"><div class="par" data-par="22"><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80" alt="Bedroom and flooring" loading="lazy" onerror="this.closest('.gtile').style.background='linear-gradient(135deg,var(--pacific-2),var(--ink))'"></div><div class="cap"><b>Bedroom &amp; Floors</b><span>Luxury vinyl</span></div></div>
+      <div class="gtile half reveal d2"><div class="par" data-par="22"><img src="https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?auto=format&fit=crop&w=900&q=80" alt="Bathroom detail" loading="lazy" onerror="this.closest('.gtile').style.background='linear-gradient(135deg,var(--clay-2),var(--ink))'"></div><div class="cap"><b>Guest Bath</b><span>Fixtures &amp; tile</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="pad" id="reviews">
+  <div class="wrap">
+    <div class="rev-top reveal">
+      <h2>Don't take our<br>word for it.</h2>
+      <div class="rev-score">
+        <div class="big tnum">5.0</div>
+        <div><div class="stars">★★★★★</div><small>Real reviews from Google · San Jose, CA</small></div>
+      </div>
+    </div>
+
+    <div class="rev-cols">
+      <div class="rev reveal"><div class="stars">★★★★★</div>
+        <p><span class="lead-q">"I would like to give 10 stars."</span> Fantastic job on our kitchen and family room. Noe, the owner, was directly involved — which was important to us — and communicated every step of the way.</p>
+        <div class="who"><span class="av" style="background:var(--pacific)">P</span><div><b>P. Nacino</b><span>Kitchen &amp; family room</span></div></div>
+        <div class="reply"><b>Ocean General replied</b>The kitchen and living room remodels were fun projects. We hope you have more in store for us.</div>
+      </div>
+
+      <div class="rev reveal d1"><div class="stars">★★★★★</div>
+        <p>They transformed our old spaces into something <b>beautiful and functional</b>. Did a wonderful job on the bathroom and the condo remodel — and great price.</p>
+        <div class="who"><span class="av" style="background:var(--clay)">H</span><div><b>Dr. Hyung Lee</b><span>Bathroom &amp; condo remodel</span></div></div>
+      </div>
+
+      <div class="rev reveal d2"><div class="stars">★★★★★</div>
+        <p>Noe took the time to explain what needed to be done, offered helpful suggestions, and got it right. <b>Professional, punctual, and very skilled.</b></p>
+        <div class="who"><span class="av" style="background:var(--brass)">C</span><div><b>Conrad</b><span>Multiple home projects</span></div></div>
+      </div>
+
+      <div class="rev reveal"><div class="stars">★★★★★</div>
+        <p>Noe is <b>transparent in his approach, hardworking and fairly priced.</b> Fixed a plumbing leak at a very good price, repaired window frames and roof tiles, replaced fixtures. Inside and out.</p>
+        <div class="who"><span class="av" style="background:var(--pacific-2)">S</span><div><b>Satheesh G.</b><span>Plumbing, windows &amp; roof</span></div></div>
+      </div>
+
+      <div class="rev reveal d1"><div class="stars">★★★★★</div>
+        <p><span class="lead-q">"HIGHLY RECOMMEND."</span> Honest, communicative, excellent service. Noe worked well with my senior parents and gave honest feedback. <b>Even the prep work was thorough.</b></p>
+        <div class="who"><span class="av" style="background:var(--clay-2)">J</span><div><b>Jill Grande</b><span>Home remodel</span></div></div>
+        <div class="reply"><b>Ocean General replied</b>It was great to work with you and your parents. I hope everyone is enjoying their new space!</div>
+      </div>
+
+      <div class="rev reveal d2"><div class="stars">★★★★★</div>
+        <p>Completely transformed our floors and elevated our home to another level — it truly <b>feels like something out of a luxury showcase.</b> The attention to detail and the patience Noe brings to his work is unmatched.</p>
+        <div class="who"><span class="av" style="background:var(--pacific)">S</span><div><b>Sheila Raines</b><span>Flooring</span></div></div>
+      </div>
+
+      <div class="rev reveal"><div class="stars">★★★★★</div>
+        <p>Noe truly listened to our ideas, helped us choose the perfect materials, and <b>offered thoughtful advice</b> whenever we needed it. Transformed our family room into the space we imagined.</p>
+        <div class="who"><span class="av" style="background:var(--clay)">G</span><div><b>Gisela Nacino</b><span>Family room</span></div></div>
+      </div>
+
+      <div class="rev reveal d1"><div class="stars">★★★★★</div>
+        <p>I've known this guy for over 10 years and he is an <b>honest, hard-working</b> guy. Does great kitchen and bathroom remodels, or builds from the ground up. You're in great hands.</p>
+        <div class="who"><span class="av" style="background:var(--brass)">A</span><div><b>Alex Leon</b><span>Local Guide · 10-year client</span></div></div>
+      </div>
+
+      <div class="rev reveal d2"><div class="stars">★★★★★</div>
+        <p>Repaired and replaced fascia and siding on my home exterior. Pleasant and respectful, <b>finished in the estimated time, left the area clean.</b> The work looked great.</p>
+        <div class="who"><span class="av" style="background:var(--pacific-2)">R</span><div><b>Raymond Lim</b><span>Exterior · siding &amp; fascia</span></div></div>
+      </div>
+
+      <div class="rev reveal"><div class="stars">★★★★★</div>
+        <p>Easy to work with even when there are plan changes. Used them for my <b>residence and my rental</b> — a very good contractor. Glad I chose them.</p>
+        <div class="who"><span class="av" style="background:var(--clay-2)">E</span><div><b>Efren Esposo</b><span>Residence &amp; rental</span></div></div>
+      </div>
+
+      <div class="rev reveal d1"><div class="stars">★★★★★</div>
+        <p>Located in San Jose, so it was <b>fast to book a consultation.</b> Really easy to work with and very attentive to your needs. Excellent job on my bathroom.</p>
+        <div class="who"><span class="av" style="background:var(--pacific)">J</span><div><b>Joshua Guzman</b><span>Bathroom remodel</span></div></div>
+      </div>
+
+      <div class="rev reveal d2"><div class="stars">★★★★★</div>
+        <p><b>Best of the best in San Jose.</b> Wouldn't choose anyone else. I recommend them to all my friends and family, and they all appreciate the excellent work.</p>
+        <div class="who"><span class="av" style="background:var(--clay)">R</span><div><b>Raul Lozano</b><span>Bathroom remodel</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="pad" id="process">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>How we work.</h2>
+      <p class="lead">No mystery, no runaround. Four steps from "I've got an idea" to "I love my house again."</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="n">01</div><h3>We talk</h3><p>Free estimate. We walk the space, listen to what you actually want, and tell you straight what it'll take.</p></div>
+      <div class="step reveal d1"><div class="n">02</div><h3>We plan</h3><p>Clear scope, real materials, an honest price and timeline. No vague numbers that balloon later.</p></div>
+      <div class="step reveal d2"><div class="n">03</div><h3>We build</h3><p>Noe's on the job. Clean site, daily updates, and a crew that respects your home and your family.</p></div>
+      <div class="step reveal d3"><div class="n">04</div><h3>We stand by it</h3><p>Walkthrough together, fix anything that bugs you, and we're still around after — just ask our repeat clients.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="pad" id="contact">
+  <div class="shader-bg" id="shaderBg" aria-hidden="true"></div>
+  <div class="wrap contact-grid">
+    <div class="contact-copy">
+      <span class="eyebrow on-dark reveal">Free estimate</span>
+      <h2 class="reveal d1">Let's build<br>something you'll<br><span class="italic">actually love.</span></h2>
+      <p class="reveal d2">Tell us about your project and Noe will get back to you — usually same day. Kitchens, baths, additions, repairs, the whole house. San Jose and the South Bay.</p>
+      <div class="contact-info">
+        <div class="cinfo reveal d2">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div><b>Shop</b><span>195 N 34th St, San Jose, CA 95116</span></div>
+        </div>
+        <div class="cinfo reveal d3">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8 9.6a16 16 0 006 6l1.2-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></span>
+          <div><b>Call or text Noe</b><a href="tel:+14086798566">(408) 679-8566</a></div>
+        </div>
+        <div class="cinfo reveal d4">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+          <div><b>Email</b><a href="mailto:bluecollarcorgis@gmail.com">bluecollarcorgis@gmail.com</a></div>
+        </div>
+      </div>
+    </div>
+
+    <form class="reveal d2" id="estimate" novalidate>
+      <div class="form-row">
+        <div class="field"><label for="fn">Name</label><input id="fn" name="name" placeholder="Your name" required></div>
+        <div class="field"><label for="ph">Phone</label><input id="ph" name="phone" placeholder="(408) 000-0000"></div>
+      </div>
+      <div class="field"><label for="em">Email</label><input id="em" type="email" name="email" placeholder="you@email.com"></div>
+      <div class="field"><label for="pr">Project</label>
+        <select id="pr" name="project">
+          <option>Kitchen remodel</option><option>Bathroom remodel</option><option>Whole-home renovation</option>
+          <option>Flooring</option><option>Addition / new build</option><option>Exterior / roofing / siding</option>
+          <option>Repairs</option><option>Something else</option>
+        </select>
+      </div>
+      <div class="field"><label for="ms">Tell us about it</label><textarea id="ms" name="message" rows="4" placeholder="What are you thinking? Rough budget and timeline help too."></textarea></div>
+      <button class="btn" type="submit"><span>Send it to Noe</span> <span class="arrow">↗</span></button>
+      <div class="form-note" id="fnote">No spam. No pressure. Just a straight answer.</div>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <b>Ocean General Contractors</b>
+        Owner-operated remodels &amp; construction.<br>San Jose &amp; the South Bay.
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col"><b>Services</b>
+          <a href="#services">Kitchens</a><a href="#services">Bathrooms</a><a href="#services">Renovations</a><a href="#services">Additions</a><a href="#services">Flooring &amp; Exterior</a>
+        </div>
+        <div class="foot-col"><b>Company</b>
+          <a href="#about">About Noe</a><a href="#work">The Work</a><a href="#reviews">Reviews</a><a href="#process">How We Work</a>
+        </div>
+        <div class="foot-col"><b>Get in touch</b>
+          <a href="tel:+14086798566">(408) 679-8566</a><a href="mailto:bluecollarcorgis@gmail.com">bluecollarcorgis@gmail.com</a><a href="#contact">Free estimate</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© <span id="yr"></span> Ocean General Contractors LLC · Licensed &amp; insured · San Jose, CA</span>
+      <span>★★★★★ 5.0 on Google</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Interactive 3D house blueprint (Three.js) -->
+<script>
+(function(){
+  if(typeof THREE === 'undefined') return;
+  var stage = document.getElementById('houseStage');
+  var canvas = document.getElementById('houseCanvas');
+  if(!stage || !canvas) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var BRASS = 0xcaa35a, TEAL = 0x57c2ac, FAINT = 0x2c5b53;
+
+  var renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+  camera.position.set(5.2, 3.3, 6.6);
+  camera.lookAt(0, 0.7, 0);
+
+  var house = new THREE.Group();
+  scene.add(house);
+
+  function edges(geo, color, w){
+    var seg = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({color:color, transparent:true, opacity:(w||1)}));
+    return seg;
+  }
+  function fill(geo, color, op){
+    return new THREE.Mesh(geo, new THREE.MeshBasicMaterial({color:color, transparent:true, opacity:op, depthWrite:false}));
+  }
+
+  // Walls
+  var wallGeo = new THREE.BoxGeometry(3.4, 2.0, 2.6);
+  var walls = edges(wallGeo, BRASS, 0.95); walls.position.y = 1.0;
+  var wallsFill = fill(wallGeo, FAINT, 0.18); wallsFill.position.y = 1.0;
+  house.add(wallsFill, walls);
+
+  // Gable roof (triangular prism via extrude)
+  var tri = new THREE.Shape();
+  tri.moveTo(-1.85, 0); tri.lineTo(1.85, 0); tri.lineTo(0, 1.35); tri.lineTo(-1.85, 0);
+  var roofGeo = new THREE.ExtrudeGeometry(tri, {depth:2.6, bevelEnabled:false});
+  roofGeo.translate(0, 0, -1.3);
+  var roof = edges(roofGeo, BRASS, 0.95); roof.position.y = 2.0;
+  var roofFill = fill(roofGeo, FAINT, 0.16); roofFill.position.y = 2.0;
+  house.add(roofFill, roof);
+
+  // Door + windows (front face at z = 1.3)
+  function rect(w, h, x, y, z, color){
+    var g = new THREE.BufferGeometry();
+    var hw=w/2, hh=h/2;
+    var pts = new Float32Array([-hw,-hh,0, hw,-hh,0, hw,hh,0, -hw,hh,0, -hw,-hh,0]);
+    g.setAttribute('position', new THREE.BufferAttribute(pts,3));
+    var line = new THREE.Line(g, new THREE.LineBasicMaterial({color:color}));
+    line.position.set(x,y,z);
+    return line;
+  }
+  house.add(rect(0.72, 1.3, -0.95, 0.65, 1.31, TEAL));   // door
+  house.add(rect(0.8, 0.7, 0.6, 1.15, 1.31, TEAL));      // front window 1
+  house.add(rect(0.8, 0.7, 1.45, 1.15, 1.31, TEAL));     // front window 2
+  // side windows (face at x = 1.7)
+  var sw1 = rect(0.8, 0.7, 1.71, 1.15, 0.5, TEAL); sw1.rotation.y = Math.PI/2; house.add(sw1);
+  var sw2 = rect(0.8, 0.7, 1.71, 1.15, -0.5, TEAL); sw2.rotation.y = Math.PI/2; house.add(sw2);
+
+  // Foundation outline + ground grid
+  var found = edges(new THREE.BoxGeometry(3.7, 0.18, 2.9), BRASS, 0.6); found.position.y = -0.09; house.add(found);
+  var grid = new THREE.GridHelper(11, 22, 0x3a6d64, 0x224740);
+  grid.material.transparent = true; grid.material.opacity = 0.45; grid.position.y = -0.18;
+  scene.add(grid);
+
+  house.position.y = -0.55;
+
+  // Interaction
+  var targetRX = 0.12, targetRY = -0.5, curRX = 0.12, curRY = -0.5;
+  var dragging = false, lastX, lastY;
+  function down(x,y){ dragging = true; lastX = x; lastY = y; }
+  function move(x,y){
+    if(!dragging) return;
+    targetRY += (x - lastX) * 0.008;
+    targetRX += (y - lastY) * 0.006;
+    targetRX = Math.max(-0.4, Math.min(0.7, targetRX));
+    lastX = x; lastY = y;
+  }
+  function up(){ dragging = false; }
+  stage.addEventListener('mousedown', function(e){ down(e.clientX, e.clientY); });
+  window.addEventListener('mousemove', function(e){ move(e.clientX, e.clientY); });
+  window.addEventListener('mouseup', up);
+  stage.addEventListener('touchstart', function(e){ down(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
+  stage.addEventListener('touchmove', function(e){ move(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
+  stage.addEventListener('touchend', up);
+
+  function resize(){
+    var w = stage.clientWidth, h = stage.clientHeight;
+    if(!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function loop(){
+    requestAnimationFrame(loop);
+    if(!dragging && !reduce) targetRY += 0.0026;
+    curRY += (targetRY - curRY) * 0.07;
+    curRX += (targetRX - curRX) * 0.07;
+    house.rotation.y = curRY;
+    house.rotation.x = curRX;
+    renderer.render(scene, camera);
+  }
+  loop();
+})();
+</script>
+
+<!-- Warm ripple shader backdrop (adapted from the supplied GLSL shader) -->
+<script>
+(function(){
+  if(typeof THREE === 'undefined') return;
+  var host = document.getElementById('shaderBg');
+  if(!host) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var vertexShader = "void main(){ gl_Position = vec4(position,1.0); }";
+  var fragmentShader = [
+    "precision highp float;",
+    "uniform vec2 resolution;",
+    "uniform float time;",
+    "void main(void){",
+    "  vec2 uv = (gl_FragCoord.xy*2.0 - resolution.xy)/min(resolution.x,resolution.y);",
+    "  float t = time*0.05;",
+    "  float lineWidth = 0.0024;",
+    "  float intensity = 0.0;",
+    "  for(int i=0;i<5;i++){",
+    "    intensity += lineWidth*float(i*i) / abs(fract(t+float(i)*0.012)*5.0 - length(uv) + mod(uv.x+uv.y,0.22));",
+    "  }",
+    "  vec3 brass = vec3(0.82,0.64,0.30);",
+    "  vec3 clay  = vec3(0.80,0.36,0.20);",
+    "  vec3 teal  = vec3(0.12,0.42,0.36);",
+    "  vec3 base  = vec3(0.045,0.038,0.030);",
+    "  vec3 warm = mix(brass, clay, clamp(length(uv)*0.55,0.0,1.0));",
+    "  vec3 color = base + intensity*warm + intensity*intensity*teal*0.15;",
+    "  gl_FragColor = vec4(color,1.0);",
+    "}"
+  ].join("\n");
+
+  var camera = new THREE.Camera(); camera.position.z = 1;
+  var scene = new THREE.Scene();
+  var uniforms = { time:{value:1.0}, resolution:{value:new THREE.Vector2()} };
+  var material = new THREE.ShaderMaterial({uniforms:uniforms, vertexShader:vertexShader, fragmentShader:fragmentShader});
+  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2), material));
+  var renderer = new THREE.WebGLRenderer({antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 1.75));
+  host.appendChild(renderer.domElement);
+
+  function resize(){
+    var w = host.clientWidth, h = host.clientHeight;
+    if(!w || !h) return;
+    renderer.setSize(w, h);
+    uniforms.resolution.value.x = renderer.domElement.width;
+    uniforms.resolution.value.y = renderer.domElement.height;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  var running = true;
+  var io = new IntersectionObserver(function(es){ running = es[0].isIntersecting; if(running) loop(); }, {threshold:0.01});
+  io.observe(document.getElementById('contact'));
+
+  var raf;
+  function loop(){
+    if(!running){ cancelAnimationFrame(raf); return; }
+    raf = requestAnimationFrame(loop);
+    uniforms.time.value += 0.05;
+    renderer.render(scene, camera);
+  }
+  loop();
+})();
+</script>
+
+<script>
+(function(){
+  var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Header scroll state */
+  var hdr = document.getElementById('hdr');
+  var onScroll = function(){ hdr.classList.toggle('scrolled', window.scrollY > 40); };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  /* Mobile menu */
+  var burger = document.getElementById('burger'), links = document.getElementById('navlinks');
+  burger.addEventListener('click', function(){ burger.classList.toggle('open'); links.classList.toggle('open'); });
+  links.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ burger.classList.remove('open'); links.classList.remove('open'); }); });
+
+  /* Reveal on scroll */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.16, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal:not(.in)').forEach(function(el){ io.observe(el); });
+
+  /* Duplicate marquee for seamless loop */
+  var track = document.getElementById('track');
+  if(track){ track.innerHTML += track.innerHTML; }
+
+  /* Count-up stats */
+  var counted = false;
+  function runCounts(){
+    if(counted) return; counted = true;
+    document.querySelectorAll('[data-count]').forEach(function(el){
+      var target = parseFloat(el.getAttribute('data-count'));
+      var dec = parseInt(el.getAttribute('data-dec')||'0',10);
+      var suf = el.getAttribute('data-suffix')||'';
+      var sup = el.querySelector('sup'); var supHTML = sup ? sup.outerHTML : '';
+      if(rm){ el.innerHTML = target.toFixed(dec)+suf+supHTML; return; }
+      var start = performance.now(), dur = 1500;
+      function tick(now){
+        var p = Math.min((now-start)/dur, 1);
+        var eased = 1-Math.pow(1-p,3);
+        var val = (target*eased).toFixed(dec);
+        el.innerHTML = val+suf+supHTML;
+        if(p<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+  var statWrap = document.querySelector('.stats');
+  if(statWrap){
+    var sio = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ runCounts(); sio.disconnect(); } }); }, {threshold:.4});
+    sio.observe(statWrap);
+  }
+
+  /* Parallax on gallery (rAF, throttled) */
+  if(!rm){
+    var pars = [].slice.call(document.querySelectorAll('.par'));
+    var ticking = false;
+    function parallax(){
+      var vh = window.innerHeight;
+      pars.forEach(function(el){
+        var r = el.parentElement.getBoundingClientRect();
+        if(r.bottom < 0 || r.top > vh) return;
+        var amt = parseFloat(el.getAttribute('data-par'))||20;
+        var prog = (r.top + r.height/2 - vh/2) / vh;
+        el.style.transform = 'translate3d(0,'+(prog*amt*-1)+'px,0)';
+      });
+      ticking = false;
+    }
+    window.addEventListener('scroll', function(){ if(!ticking){ requestAnimationFrame(parallax); ticking = true; } }, {passive:true});
+    parallax();
+  }
+
+  /* Form (demo: opens mail client, no backend) */
+  var form = document.getElementById('estimate');
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var n = document.getElementById('fn').value || 'there';
+      var note = document.getElementById('fnote');
+      var data = new FormData(form);
+      var body = encodeURIComponent('Name: '+(data.get('name')||'')+'\nPhone: '+(data.get('phone')||'')+'\nEmail: '+(data.get('email')||'')+'\nProject: '+(data.get('project')||'')+'\n\n'+(data.get('message')||''));
+      note.textContent = 'Thanks '+n+' — opening your email to send this to Noe...';
+      note.style.color = 'var(--brass)';
+      var mailLink = document.querySelector('#contact a[href^="mailto:"]');
+      var to = mailLink ? mailLink.getAttribute('href').replace('mailto:','').split('?')[0] : 'bluecollarcorgis@gmail.com';
+      window.location.href = 'mailto:'+to+'?subject='+encodeURIComponent('Free estimate request — '+(data.get('project')||'Project'))+'&body='+body;
+    });
+  }
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+})();
+</script>
+
+<!-- ============================================================
+     CMS HYDRATION
+     Pulls editable content from content.json (managed in /admin)
+     and applies it over the page. If the file is missing or the
+     page is opened directly from disk (file://), it silently keeps
+     the built-in content, so the site always renders.
+============================================================ -->
+<script>
+(function(){
+  fetch('content.json', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(apply)
+    .catch(function(){ /* keep built-in defaults */ });
+
+  function txt(sel, val){ if(val==null) return; var el=document.querySelector(sel); if(el) el.textContent = val; }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function digits(s){ return (String(s).match(/\d/g)||[]).join(''); }
+
+  var AV = ['var(--pacific)','var(--clay)','var(--brass)','var(--pacific-2)','var(--clay-2)'];
+  var ICONS = [
+    '<path d="M3 9h18M5 9V5a2 2 0 012-2h10a2 2 0 012 2v4M7 13h2m-2 4h2m4-4h4m-4 4h4"/><rect x="3" y="9" width="18" height="12" rx="1.5"/>',
+    '<path d="M4 12V6a2 2 0 012-2h1a2 2 0 012 2M4 12h16v3a4 4 0 01-4 4H8a4 4 0 01-4-4v-3zM6 19l-1 2m13-2l1 2"/>',
+    '<path d="M3 11l9-7 9 7M5 10v9h14v-9M9 19v-5h6v5"/>',
+    '<path d="M3 7l9-4 9 4-9 4-9-4zM3 7v10l9 4 9-4V7M12 11v10"/>',
+    '<path d="M3 16h18M3 16l3-9h12l3 9M7 16v4m10-4v4M9 11h6"/>',
+    '<path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6M14 8h.01"/>'
+  ];
+
+  // Re-reveal newly created .reveal nodes
+  function observe(nodes){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:.14, rootMargin:'0px 0px -8% 0px'});
+    nodes.forEach(function(n){ io.observe(n); });
+  }
+
+  function apply(c){
+    c = c || {};
+    var b = c.business||{}, ct = c.contact||{}, h = c.hero||{}, a = c.about||{}, cs = c.contactSection||{};
+
+    // Business / brand
+    txt('.brand b', b.shortName);
+    txt('.brand small', b.tagline);
+    txt('.hero-loc', b.heroLocation);
+    if(b.heroRating){ var hr=document.querySelector('.hero-rating'); if(hr) hr.innerHTML='<span class="stars">★★★★★</span><br>'+esc(b.heroRating); }
+    txt('.signoff .sig', b.ownerName);
+    txt('.signoff small', b.ownerTitle);
+    document.querySelectorAll('.foot-brand b').forEach(function(el){ if(b.name) el.textContent=b.name; });
+
+    // Contact (phone + email everywhere, derived hrefs)
+    if(ct.phone){
+      var tel='tel:+1'+digits(ct.phone);
+      document.querySelectorAll('a[href^="tel:"]').forEach(function(el){ el.textContent=ct.phone; el.setAttribute('href',tel); });
+    }
+    if(ct.email){
+      document.querySelectorAll('a[href^="mailto:"]').forEach(function(el){ el.textContent=ct.email; el.setAttribute('href','mailto:'+ct.email); });
+    }
+    txt('#contact .cinfo div span', ct.address); // address text (not the icon span)
+
+    // Hero
+    txt('.hero h1', h.headline);
+    txt('.hero-sub > p', h.subtext);
+    var cta1=document.querySelector('.hero-actions .btn:not(.ghost) span:first-child'); if(cta1 && h.ctaPrimary) cta1.textContent=h.ctaPrimary;
+    var cta2=document.querySelector('.hero-actions .btn.ghost span'); if(cta2 && h.ctaSecondary) cta2.textContent=h.ctaSecondary;
+    if(h.videoUrl){ var src=document.querySelector('.hero-vid source'); if(src){ src.setAttribute('src',h.videoUrl); var v=document.querySelector('.hero-vid'); if(v){ v.style.display=''; v.load(); } } }
+
+    // About
+    txt('#about .eyebrow', a.eyebrow);
+    txt('#about .copy h2', a.heading);
+    var ps=document.querySelectorAll('#about .copy p');
+    if(ps[0] && a.paragraph1) ps[0].textContent=a.paragraph1;
+    if(ps[1] && a.paragraph2) ps[1].textContent=a.paragraph2;
+    if(a.photo){ var img=document.querySelector('.owner-photo img'); if(img){ img.style.display=''; img.setAttribute('src',a.photo); } }
+    var ot=document.querySelector('.owner-photo .tag');
+    if(ot && (a.photoCaption||a.photoLocation)) ot.innerHTML='<b>'+esc(a.photoCaption||'')+'</b><span>'+esc(a.photoLocation||'')+'</span>';
+
+    // Contact section copy
+    txt('#contact .contact-copy .eyebrow', cs.eyebrow);
+    txt('#contact .contact-copy h2', cs.heading);
+    txt('#contact .contact-copy > p', cs.text);
+
+    var fresh = [];
+
+    // Services
+    if(Array.isArray(c.services) && c.services.length){
+      var grid=document.querySelector('.svc-grid');
+      if(grid){
+        grid.innerHTML = c.services.map(function(s,i){
+          var tags=(s.tags||'').split(',').map(function(t){return t.trim();}).filter(Boolean)
+            .map(function(t){return '<span>'+esc(t)+'</span>';}).join('');
+          var icon=ICONS[i] || ICONS[0];
+          return '<div class="svc reveal">'+
+            '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">'+icon+'</svg>'+
+            '<div class="num">'+String(i+1).padStart(2,'0')+'</div>'+
+            '<div><h3>'+esc(s.title||'')+'</h3><p>'+esc(s.description||'')+'</p></div>'+
+            '<div class="tags">'+tags+'</div></div>';
+        }).join('');
+        fresh = fresh.concat([].slice.call(grid.querySelectorAll('.reveal')));
+      }
+    }
+
+    // Reviews
+    if(Array.isArray(c.reviews) && c.reviews.length){
+      var cols=document.querySelector('.rev-cols');
+      if(cols){
+        cols.innerHTML = c.reviews.map(function(rv,i){
+          var letter=(rv.name||'?').trim().charAt(0).toUpperCase();
+          var reply = rv.reply ? '<div class="reply"><b>Ocean General replied</b>'+esc(rv.reply)+'</div>' : '';
+          return '<div class="rev reveal">'+
+            '<div class="stars">★★★★★</div>'+
+            '<p>'+esc(rv.quote||'')+'</p>'+
+            '<div class="who"><span class="av" style="background:'+AV[i%AV.length]+'">'+esc(letter)+'</span>'+
+            '<div><b>'+esc(rv.name||'')+'</b><span>'+esc(rv.detail||'')+'</span></div></div>'+
+            reply+'</div>';
+        }).join('');
+        fresh = fresh.concat([].slice.call(cols.querySelectorAll('.reveal')));
+      }
+    }
+
+    // Gallery
+    if(Array.isArray(c.gallery) && c.gallery.length){
+      var gal=document.querySelector('.gallery');
+      if(gal){
+        gal.innerHTML = c.gallery.map(function(g){
+          var size=({wide:'wide',tall:'tall',half:'half'})[g.size]||'half';
+          return '<div class="gtile '+size+' reveal">'+
+            '<img src="'+esc(g.image||'')+'" alt="'+esc(g.title||'')+'" loading="lazy" '+
+            'onerror="this.closest(\'.gtile\').style.background=\'linear-gradient(135deg,var(--pacific),var(--ink))\'">'+
+            '<div class="cap"><b>'+esc(g.title||'')+'</b><span>'+esc(g.sub||'')+'</span></div></div>';
+        }).join('');
+        fresh = fresh.concat([].slice.call(gal.querySelectorAll('.reveal')));
+      }
+    }
+
+    if(fresh.length) observe(fresh);
+  }
+})();
+</script>
+</body>
+</html>
